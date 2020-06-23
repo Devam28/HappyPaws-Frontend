@@ -1,19 +1,14 @@
 .footer{
-
     background-color:#1a237e ; 
     color: white;
-
-   
 }
 
 .right{
     float: left;
-    
 }
 
 li a{color:white}
 .link_title1{
-   
    flex-direction: column;
    flex-grow: 1;
    display: flex; 
@@ -21,6 +16,5 @@ li a{color:white}
 .title1{
     float: right; 
 }
-
 
 li {list-style-type: none;}
