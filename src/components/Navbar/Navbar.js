@@ -28,6 +28,7 @@ class NavbarComponent extends Component {
             snackbarMssg: '',
             loggedinStatus: JSON.parse(localStorage.getItem('loggedInStatus')) && JSON.parse(localStorage.getItem('loggedInStatus')),
             editProfile: JSON.parse(localStorage.getItem('EditProfile')) && JSON.parse(localStorage.getItem('EditProfile')),
+            mailSent: JSON.parse(localStorage.getItem('mailSent')) && JSON.parse(localStorage.getItem('mailSent')),
         }
         this.showLoginModal = this.showLoginModal.bind(this);
     }
@@ -46,6 +47,13 @@ class NavbarComponent extends Component {
                 editProfile: JSON.parse(localStorage.getItem('EditProfile')) && JSON.parse(localStorage.getItem('EditProfile')),
                 snackbarMssg: "Profile Edited successfully",
                 open: this.state.editProfile && (this.state.editProfile.editProfile === true ? true : false),
+            })
+        }
+        if (JSON.parse(localStorage.getItem('mailSent')) !== null) {
+            this.setState({
+                mailSent: JSON.parse(localStorage.getItem('mailSent')) && JSON.parse(localStorage.getItem('mailSent')),
+                snackbarMssg: "Mail sent successfully!!",
+                open: this.state.mailSent && (this.state.mailSent.mailSent === true ? true : false),
             })
         }
     }
@@ -85,6 +93,15 @@ class NavbarComponent extends Component {
             });
             localStorage.setItem('EditProfile', JSON.stringify({
                 editProfile: false
+            }));
+        }
+        if (JSON.parse(localStorage.getItem('mailSent'))) {
+            this.setState({
+                open: false,
+                mailSent: false
+            });
+            localStorage.setItem('mailSent', JSON.stringify({
+                mailSent: false
             }));
         }
 
@@ -136,7 +153,7 @@ class NavbarComponent extends Component {
                             <Nav.Link as={Link} to="/donation">Donation</Nav.Link>
                             <Nav.Link as={Link} to="/search">Find a Pet</Nav.Link>
                             <Nav.Link as={Link} to="/petCare">Pet Care</Nav.Link>
-                            <Nav.Link as={Link} to="/share" className="my-active">Share your Story</Nav.Link>
+                            <Nav.Link as={Link} to={this.state.store && this.state.store.login === true ? '/share' : 'login'} className="my-active">Share your Story</Nav.Link>
                             <NavDropdown title="Support Us" id="basic-nav-dropdown">
                                 <NavDropdown.Item as={Link} to="/volunteer" >Volunteer</NavDropdown.Item>
                                 <NavDropdown.Divider />

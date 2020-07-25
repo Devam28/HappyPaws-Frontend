@@ -11,6 +11,7 @@ import dog1 from '../../assets/golden1.jpeg';
 import NavbarComponent from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import { Link } from 'react-router-dom';
+import Snackbar from '@material-ui/core/Snackbar';
 import pet_carousel1 from '../../assets/pet_carousel1.jpg';
 import cat_carousel2 from '../../assets/cat_carousel2.jpg';
 import pet_carousel3 from '../../assets/pet_carousel3.jpg';
@@ -26,14 +27,42 @@ import volunteer from '../../assets/volunteer.jpg';
 // import Login from '../Login-Register/Login'
 
 class HomePage extends Component {
-    // constructor(props) {
-    //     super(props)
+    constructor(props) {
+        super(props)
 
-    //     this.state = {
-    //         addModalShow: false
-    //     }
-    //     this.showLoginModal = this.showLoginModal.bind(this);
-    // }
+        this.state = {
+            // addModalShow: false
+            open: false,
+            vertical: 'bottom',
+            horizontal: 'center',
+            snackbarMssg: '',
+            shareStory: JSON.parse(localStorage.getItem('shareStory')) && JSON.parse(localStorage.getItem('shareStory')),
+
+
+        }
+        // this.showLoginModal = this.showLoginModal.bind(this);
+    }
+    componentWillMount() {
+        if (JSON.parse(localStorage.getItem('shareStory')) !== null) {
+            this.setState({
+                shareStory: JSON.parse(localStorage.getItem('shareStory')) && JSON.parse(localStorage.getItem('shareStory')),
+                snackbarMssg: "Story shared successfully!!",
+                open: this.state.shareStory && (this.state.shareStory.shareStory === true ? true : false),
+            })
+        }
+    }
+
+    handleClose = () => {
+        if (JSON.parse(localStorage.getItem('shareStory'))) {
+            this.setState({
+                open: false,
+                shareStory: false,
+            });
+            localStorage.setItem('shareStory', JSON.stringify({
+                shareStory: false
+            }));
+        }
+    }
 
     // showLoginModal = () => {
     //     this.setState({
@@ -53,6 +82,7 @@ class HomePage extends Component {
     render() {
         // const { isFetching } = this.state;
         // const LoginModal = this.state.addModalShow
+        const { horizontal, vertical } = this.state;
 
         return (
             <div className="home-component">
@@ -204,6 +234,14 @@ class HomePage extends Component {
                         </Row>
                     </Container>
                 </div>
+                <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                open={this.state.open}
+                onClose={this.handleClose}
+                autoHideDuration={2000}
+                message={this.state.snackbarMssg}
+                key={vertical + horizontal}
+            />
                 <Footer />
             </div>
 

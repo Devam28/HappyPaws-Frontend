@@ -61,6 +61,7 @@ class ForgetPasswordEmail extends Component {
     emailValidation = (email) => {
         return new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email);
     }
+
     // function call for alert close
     handleClose = () => {
         this.setState({ open: false });
@@ -72,11 +73,15 @@ class ForgetPasswordEmail extends Component {
         nextState[label] = e.target.value;;
         this.setState(nextState);
     }
+
 // api call for receving mail for resetting password: POST Api call
     onClick = () => {
         axios.post(utils.baseUrl + "users/forgetPasswordMail", { email: this.state.email})
             .then(res => {
                 if (res.status === 200 && res.statusText === 'OK') {
+                    localStorage.setItem('mailSent', JSON.stringify({
+                        mailSent: true
+                    }));
                     this.props.history.push("/")
                 } 
             })

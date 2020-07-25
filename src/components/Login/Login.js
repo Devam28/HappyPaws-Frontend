@@ -48,8 +48,6 @@ class Login extends Component {
     
             })
         }
-
-        
     }
     
 // validation check for all input
@@ -168,6 +166,9 @@ class Login extends Component {
                                 />{' '}HappyPaws</h2>
                             <br />
                             <h4>Login</h4>
+                            
+                            <h6>Please login to HappyPaws for the best experience!</h6>
+                            <br />
                             <a href="/register">Not a member of HappyPaws? Register here</a>
                             <br />
                             <Container className="centered">
