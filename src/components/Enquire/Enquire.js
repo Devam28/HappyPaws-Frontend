@@ -202,7 +202,7 @@ class Enquire extends Component {
                                     />
                                 </Row>
                                 <Row>
-                                <Link to="/profile"> <Button disabled={this.state.disabled} type="submit" size="lg" variant="outline-primary">Enquire</Button>{' '}</Link>
+                                <Link to="/profile"> <Button type="submit" size="lg" variant="outline-primary">Enquire</Button>{' '}</Link>
                                        
                                 </Row>            
                                 </Container>

@@ -142,7 +142,7 @@ class Adopt extends Component {
 
   formSubmit = (event) => {
     event.preventDefault()
-    alert(`Your query has been set to us. We shall get back to you shortly`)
+    alert(`Your query has been set to us. We shall get back to you shortly` +this.state.email)
     this.setState(primeState)
     this.props.history.push('/');
   }

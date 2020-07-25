@@ -1,26 +1,26 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+
+import { Container, Button, Row } from 'react-bootstrap';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import dogVol from './dogvolunteer.jpg';
-import { Link, NavLink } from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
+
 import NavbarComponent from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
+import dogVol from './dogvolunteer.jpg';
 import './Volunteer.css';
 
 
-import { Form, Container, Button, Row, Col } from 'react-bootstrap';
-import TextField from '@material-ui/core/TextField';
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
-  return (
-    
+  return ( 
     <div
       role="tabpanel"
       hidden={value !== index}
@@ -62,179 +62,92 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VerticalTabs() {
+export default function Volunteer() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const primeState={
-    fname:'',
-    lname:'',
-    email:'',
-    location:'',
-    hours:'',
-    fnameError:'',
-    lnameError:'',
-    mailError:'',
-    locError:'',
-    hoursError:'',
-    
+  const[fname,setFname]=React.useState("");
+  const[lname,setLname]=React.useState("");
+  const[email,setEmail]=React.useState("");
+  const[contact,setContact]=React.useState("");
+  const[event,setEvent]=React.useState("");
 
-}
+  
+  const[emailError,setEmailError]=React.useState("");
+  const[contactError,setContactError]=React.useState("");
+  const[eventError,setEventError]=React.useState("");
+
+  const[eventList,setEventList]=React.useState([]);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-    const check=()=>{
-        let fnameError="";
-        let lnameError="";
-        let mailError="";
-        let hoursError="";
-        let locError="";
+  const handleEmailError = (event) => {
+    if(!email.includes("@"))
+    {
+        setEmailError("Invalid Email")
+    }
+    else
+    {
+        setEmailError("")   
+    }
+  };
+
+  const handleContactError = (event) => {
+    if(contact.length<10)
+    {
+        setContactError("Invalid Contact Number")
+    }
+    else if(contact.length>10)
+    {
+        setContactError("Invalid Contact Number")
+    }
+    else
+    {
+        setContactError("")   
+    }
+  };
+
+  const handleEventError = (event) => {
+    if(event==="Select an Event that you would like to volunteer")
+    {
+        setEventError("Please select an even to volunteer")
+    }
+    else
+    {
+        setEventError("")   
+    }
+  };
+
+    React.useEffect(()=>{
+    axios.get('http://localhost:5000/volunteer')
+      .then(res => {
+          //console.log(res.data)
+        // const pets = res.data;
+        // this.setState({ pets });
+        setEventList(res.data)
+        //this.setState({pets: res.data});
         
+        // let d = this.state.pets;
+        // let items = Object.values(d)
+        // console.log(items.length)
+      },[])
+  });
 
-        if(!primeState.email.includes('@')){
-            mailError="INVALID EMAIL";
-        }
-        if(!primeState.fname){
-            fnameError="BLANK FIELD"
-        }
-        if(!primeState.lname){
-            lnameError="BLANK FIELD"
-        }
-        
-        if(!primeState.email){
-            mailError="BLANK FIELD"
-        }
-        if(!primeState.location){
-            locError="BLANK FIELD"
-        }
-        if(!primeState.hours){
-            hoursError="BLANK FIELD"
-        }
-       
-       
-        if (mailError || hoursError||locError||fnameError||lnameError) {
-            // this.setState({ mailError, hoursError,locError,fnameError,lnameError });
-            setValue({ mailError, hoursError,locError,fnameError,lnameError });
-            return false;
+ const onSubmit = () => {
+   
+      axios.post('http://localhost:5000/volunteer/volunteer',{firstName:fname,lastName:lname,email:email,contactNo:contact,eventName:event})
+      .then(function(res){
+          if(res.status===200&&res.statusText==='OK'){
+
           }
-          
-        if(mailError){
-            // this.setState({mailError});
-            setValue({ mailError});
-            return false;
-        }
-        return true;
-    };
-    
-  
-    const state = {
-      name: '',
-      email: '',
-      password: '',
-      number: '',
-      postal: '',
-      nameError: null,
-      emailError: null,
-      numberError:null,
-      postalError: null,
-      disabled: true,
+      })
+      .catch(function(e){
 
-  }
+      console.log("Error"+e);
 
-  const isSubmitDisabled = () => {
-      let nameIsRequired = false;
-      let validEmail = false;
-      let validNumber = false;
-      let validPostal = false;
-
-      if (state.name === '' || !state.name) {
-          nameIsRequired = false;
-          this.setState({
-              nameError: null
-          });
-      } else {
-          if (state.name !== '') {
-              nameIsRequired = true
-              this.setState({
-                  nameError: null
-              });
-          }
-
-      }
-
-      if (state.email === "") {
-          this.setState({
-              emailError: null
-          });
-      } else {
-          if (emailValidation(this.state.email)) {
-              validEmail = true
-              this.setState({
-                  emailError: null
-              });
-          } else {
-              this.setState({
-                  emailError: "Please enter valid email"
-              });
-          }
-      }
-
-      if (state.number.length > 10 ) {
-          validNumber = false
-          this.setState({
-              numberError: "Enter a valid contact number"
-          });
-      } else {
-          validNumber = true
-              this.setState({
-                  numberError: null
-              });
-
-      }
-      
-      if ( postalValidation(state.postal) ) {
-          validPostal = false;
-          this.setState({
-              postalError: "Enter valid postal code"
-          });
-      } else {
-          if (state.postal.length>6) {
-              validPostal = false
-              this.setState({
-                  postalError: "Enter valid postal code"
-              });
-          }
-          else{
-              validPostal = true
-              this.setState({
-                  postalError: null
-              });
-          }
-
-      }
-  }
-
-  const emailValidation = (email) => {
-      return new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email);
-     
-  }
-
-  const postalValidation = (postal) => {
-      return new RegExp(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/).test(postal);
-     
-  }
-
-  const onValueChange = (e, label) => {
-      const nextState = {};
-      nextState[label] = e.target.value;;
-      this.setState(nextState);
-  }
-
-  const onSubmit = () => {
-      alert("Message sent");
-      console.log(this.state);
-      this.props.history.push('/profile');
+      })
   }
 
   return (
@@ -280,13 +193,13 @@ export default function VerticalTabs() {
       </TabPanel>
       <TabPanel value={value} index={1}>
           <center >
-          <b><i>List of current Volunteering events for you to participate</i></b>
+          <b><i>List of current Volunteering events for you to participate</i></b> 
             <ul className="events">
-                <li>Take a Dog for a Walk</li>
-                <li>Kitty Corner</li>
-                <li>Pet Washes</li>
-                <li>Halifax Pet Community Parade</li>
-                <li>Pet Food Expo</li>
+                        {eventList.map(item => (
+                    <li key={item._id}>
+                    {item.eventName}
+                    </li>
+                ))}               
             </ul>
         </center>
       </TabPanel>
@@ -295,21 +208,24 @@ export default function VerticalTabs() {
       <div className="FormVolunteer">
           
       <form className="form" onSubmit={onSubmit} action="/" >
-          <h4>Fill up the registration form to Volnteer with us</h4>
+          <h4>Fill up the registration form to Volunteer with us</h4>
                         <div>
                             <Container>
                                 <Row className="rows" >
 
                                     <TextField
                                         required
-                                        
                                         label="First Name"
-                                       
+                                        value={fname}
+                                        onChange={e=>setFname(e.target.value)}
                                         variant="outlined"
                                     />
 
                                     <TextField
+                                        required
                                         label="Last Name"
+                                        value={lname}
+                                        onChange={e=>setLname(e.target.value)} 
                                         variant="outlined"
                                         />
                                 </Row>
@@ -317,33 +233,44 @@ export default function VerticalTabs() {
                                 <Row className="rows">
                                     <TextField
                                         required
-                                       
                                         label="Email"
-                                       
+                                        value={email}
+                                        onChange={e=>setEmail(e.target.value)}
+                                        helperText={emailError}
+                                        error={emailError}
+                                        onBlur={handleEmailError}
                                         variant="outlined"
                                     />
                                     <TextField
+                                    required
                                         label="Contact Number"
                                         type="number"
-                              
+                                        value={contact}
+                                        onChange={e=>setContact(e.target.value)}
+                                        helperText={contactError}
+                                        error={contactError}
+                                        onBlur={handleContactError}
                                         variant="outlined"
                                     />
                                 </Row>
                                 <Row className="rows">
-                                    <select className="drop">
-                                        <option>Select an Event that you would like to volunteer</option>
-                                        <option>Take a Dog for a Walk</option>
-                                        <option>Kitty Corner</option>
-                                        <option>Pet Washes</option>
-                                        <option>Halifax Pet Community Parade</option>
-                                        <option>Pet Food Expo</option>
-                                        </select>
+                                    <select className="dropdown" 
+                                    helperText={eventError}
+                                    error={eventError}
+                                    onBlur={handleEventError}
+                                    onChange={e=>setEvent(e.target.value)}>
+                                    <option>Select an Event that you would like to volunteer</option>               
+                                    {eventList.map(item => 
+                                    <option key={item._id}>{item.eventName}</option>
+                                    )}                
+                                    </select>
                                    
                                 </Row>
                                 
                                 <Row className="rows">
-                                <Link to="/"> <Button disabled={state.disabled} type="submit" size="lg" variant="outline-primary">Volunteer</Button>{' '}</Link>
-                               
+                                
+                                  <Button type="submit" size="lg" variant="outline-primary">Volunteer</Button>
+                                 
                                 </Row>            
                                 </Container>
 
