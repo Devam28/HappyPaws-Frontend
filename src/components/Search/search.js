@@ -1,17 +1,25 @@
+/**
+ * @author: Bhagyashree
+ */ 
 import React, { Component } from 'react';
 import {Col, Image, Row, Card, Form, FormControl, Button } from 'react-bootstrap';
 import Select from '@material-ui/core/Select';
 import {FormControl as FCMaterial} from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
-import data from './data';
+//import data from './data';
 import './search.css';
 import NavbarComponent from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
+import * as utils from '../../baseUrl';
+const axios = require('axios');
+const formData= require('form-data');
+
+
 
 class Search extends Component {
   constructor(){
     super();
-
+    
     this.state={
       search:null,
       type:null,
@@ -20,12 +28,50 @@ class Search extends Component {
       age:null,
       gender:null,
       proximity:null,
+      data:[]
     };
   }
 
+  //Fetch pet data from backend 
+  componentDidMount = () => {
+    axios({
+      method: 'get',
+      url: utils.baseUrl+ 'search'
+      })
+      .then((response) => {
+        // if the request is successful, the fetched data will be stored in the state-data
+          this.setState({data:response.data})
+      })
+      .catch((response) => {
+        this.setState({data:[]});
+      });
+  }
+
+  //fetch the value for the given pet from backend
+  viewPet = (e,id) =>{
+    var formData = new FormData();
+    formData.set('id',id);
+    console.log("heyyyyyyyyyyyyy"+id);
+    axios({
+      method: 'post',
+      url: 'http://localhost:5000/search/viewpet',
+      body: {"id": id}
+      })
+      .then(function (response) {
+          //handle success
+          console.log("success"+response.data.msg+"comple");
+      })
+      .catch(function (response) {
+          //handle error
+          console.log("fail"+response);
+      });
+  };
+
   // functions for setting the values of the state variables
   handleSearch=(e)=>{
-    this.setState({search:e.target.value})
+    let keyword= e.target.value.toLowerCase();
+    keyword= keyword.charAt(0).toUpperCase() + keyword.slice(1);
+    this.setState({search:keyword})
   };
   handleType=(e)=>{
     this.setState({type:e.target.value});
@@ -50,17 +96,27 @@ class Search extends Component {
   search=(d)=>{
     if(this.state.search == null )
       return d;
-    else if(d.name.toString().toLowerCase().includes(this.state.search.toString().toLowerCase()) || d.breed.toString().toLowerCase().includes(this.state.search.toString().toLowerCase()) || d.type.toString().toLowerCase().includes(this.state.search.toString().toLowerCase())){
-      console.log("inside search"+this.state.search);
-      return d;
+    else {
+      const url= utils.baseUrl + 'search/' +this.state.search;
+      axios({
+        method: 'get',
+        url: url
+        })
+        .then((response) => {
+          // if the request is successful, the fetched data will be stored in the state-data
+            this.setState({data:response.data})
+        })
+        .catch((response) => {
+          this.setState({data:[]});
+        });
     }
-  };
+    };
+
   searchType=(d)=>{
     if(this.state.type == null ){
       return d;
     }
     else if(d.type.toString().toLowerCase().includes(this.state.type.toString().toLowerCase()) ){
-      console.log("inside"+this.state.type);
       return d;
     }
   };
@@ -88,8 +144,6 @@ class Search extends Component {
   searchAge=(d)=>{
     let age=d.age;
     let filtered;
-    console.log("age"+age);
-    console.log("state age"+this.state.age);
     switch(this.state.age){
       case null:
         return d;
@@ -158,49 +212,44 @@ class Search extends Component {
     //Data to be rendered
 render() { 
   let filteredData;
-  let items = data.filter((d)=>{
-    console.log("1");
-    filteredData=this.search(d);
-    return filteredData;
-  }).filter((d)=>{
-    console.log("2");
+  let pets=this.state.data;
+  let items = pets.filter((d)=>{
+  //   filteredData=this.search(d);
+  //   return filteredData;
+  // }).filter((d)=>{
     filteredData=this.searchType(d);
     return filteredData;
   }).filter((d)=>{
-    console.log("3");
     filteredData=this.searchColor(d);
     return filteredData;
   }).filter((d)=>{
-    console.log("4");
     filteredData=this.searchBreed(d);
     return filteredData;
   }).filter((d)=>{
-    console.log("6");
     filteredData=this.searchGender(d);
     return filteredData;
   }).filter((d)=>{
-    console.log("5");
     filteredData=this.searchAge(d);
     return filteredData;
   }).filter((d)=>{
-    console.log("7");
     filteredData=this.searchProximity(d);
     return filteredData;
   }).map(d=>{
+    const id=d._id;
     return(
      
-      <Col sm={4} md={4} className="card-center">
-            <ul  ><li>
-              <Card className="m-2" style={{ width: '18rem' }}>
+      <Col sm={6} md={4} >
+            <ul  ><li className="pl-0">
+              <Card  style={{ width: '16rem' }}>
                 
                 <Card.Img variant="top" src={d.image} height="250px" width="250px"  />
-                <Card.Body className="nav-background">
+                <Card.Body className="card-background">
                   <Card.Title>{d.name}</Card.Title>
                   <Card.Text>
                   {d.age} Years | {d.breed} | {d.location} miles away
                   
                   </Card.Text>
-                  <Button  className="button-css" variant="outline-primary"  onClick={() => this.props.history.push('/profile')}>View</Button>
+                  <Button  className="button-css" variant="light"  onClick={(e,f={id}) => this.viewPet(e,f={id})}>View</Button>
                 </Card.Body>
               </Card>
               </li></ul>
@@ -216,22 +265,22 @@ render() {
         <NavbarComponent />
       <Row className="search-center m-5"> 
         <Form inline >
-          <FormControl  type="text" placeholder="Search" onChange={(e)=>this.handleSearch(e)} />
-          <Button className="button-css" variant="outline-primary" size="lg">Search</Button>
+          <FormControl  type="text" placeholder="Search" name="searchfield" onChange={(e)=>this.handleSearch(e)}/>
+          <Button className="button-css" variant="outline-primary" size="lg" onClick={(e)=>this.search(e)}>Search</Button>
         </Form>
       </Row>
     <Row>
         <Col sm={2} md={2}>
-          <FCMaterial className="search-center ml-5" >
-            <InputLabel className="search-center options" width="100">Pet Type</InputLabel>
+          <FCMaterial className="search-center ml-5 mr-5 " >
+            <InputLabel className="search-center options " width="100">Pet Type</InputLabel>
             <Select className="search-center options ml-5" defaultValue={this.state.type} onChange={this.handleType}>
               <option aria-label="None" value="" />
               <option value="Dog">Dog</option>
               <option value="Cat">Cat</option>
-              <option value="Birds">Other</option>
+              <option value="Other">Other</option>
             </Select>
           </FCMaterial>
-          <FCMaterial className="search-center ml-5" >
+          <FCMaterial className="search-center ml-5 mr-5" >
             <InputLabel className="search-center options" width="100">Age</InputLabel>
             <Select className="search-center options ml-5" onChange={this.handleAge}>
               <option aria-label="None" value="" />
@@ -242,7 +291,7 @@ render() {
               <option value="E">Above 30</option>
             </Select>
           </FCMaterial>
-          <FCMaterial className="search-center ml-5" >
+          <FCMaterial className="search-center ml-5 mr-5" >
             <InputLabel className="search-center options" width="100">Color</InputLabel>
             <Select className="search-center options ml-5" onChange={this.handleColor}>
               <option aria-label="None" value="" />
@@ -254,7 +303,7 @@ render() {
               <option value="gray">Gray</option>
             </Select>
           </FCMaterial>
-          <FCMaterial className="search-center ml-5" >
+          <FCMaterial className="search-center ml-5 mr-5" >
             <InputLabel className="search-center options"  width="100">Breed</InputLabel>
             <Select className="search-center options ml-5" onChange={this.handleBreed}>
               <option aria-label="None" value="" />
@@ -274,7 +323,7 @@ render() {
 
             </Select>
           </FCMaterial>
-          <FCMaterial className="search-center ml-5" >
+          <FCMaterial className="search-center ml-5 mr-5" >
             <InputLabel className="search-center options" width="100">Gender</InputLabel>
             <Select className="search-center options ml-5" onChange={this.handleGender} >
               <option aria-label="None" value="" />
@@ -282,7 +331,7 @@ render() {
               <option value="Female">Female</option>
             </Select>
           </FCMaterial>
-          <FCMaterial className="search-center ml-5" >
+          <FCMaterial className="search-center ml-5 mr-5" >
             <InputLabel className="search-center options"  width="100">Proximity</InputLabel>
             <Select className="search-center options ml-5" onChange={this.handleProximity}>
               <option aria-label="No" value="" />
@@ -292,7 +341,7 @@ render() {
               <option value="S">More than 15</option>
             </Select>
           </FCMaterial>
-          <Button variant="success m-5" className="button-css" variant="outline-primary"  onClick={this.clearFilter}>Clear Filters </Button>
+          <Button variant="success " className="search-center button-css" variant="outline-primary"  onClick={this.clearFilter}>Clear Filters </Button>
         </Col>
         <Col sm={10} md={10}>
           <Row>
