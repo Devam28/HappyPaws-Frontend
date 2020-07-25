@@ -1,16 +1,19 @@
+/************
+ * Author: Moni Shah 
+ **********/
+
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
 import { Row, Col, Container } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import './login.css';
 import PropTypes from 'prop-types';
-import PetsIcon from '@material-ui/icons/Pets';
 import CloseIcon from '@material-ui/icons/Close';
-import { Link } from 'react-router-dom';
-import logo from '../Navbar/Logo.png';
+import logo from '../../assets/Logo.png';
 import axios from 'axios';
 import { withRouter } from 'react-router';
 import Snackbar from '@material-ui/core/Snackbar';
+import * as utils from '../../baseUrl';
 
 class Login extends Component {
     constructor(props) {
@@ -30,9 +33,12 @@ class Login extends Component {
             editProfile: JSON.parse(localStorage.getItem('EditProfile')) && JSON.parse(localStorage.getItem('EditProfile')),
         };
     }
+    // used for withRouter 
     static propTypes = {
         history: PropTypes.object.isRequired
     }
+
+    // showing alert for User Registered successfully by getting value from localstorage
     componentWillMount = () =>{ 
         if(JSON.parse(localStorage.getItem('Register')) !== null) {
             this.setState({
@@ -46,7 +52,7 @@ class Login extends Component {
         
     }
     
-
+// validation check for all input
     isSubmitDisabled = () => {
         let validEmail = false;
         let passwordIsValid = false;
@@ -97,17 +103,18 @@ class Login extends Component {
 
         }
     }
-
+// regex for email validation
     emailValidation = (email) => {
         return new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email);
     }
 
+    // onchange method for all inputs
     onValueChange = (e, label) => {
         const nextState = {};
         nextState[label] = e.target.value;;
         this.setState(nextState);
     }
-    
+    // close function for closing the alerts
     handleClose = () => {
         this.setState({ open: false,
             registerStatus: false });
@@ -115,9 +122,9 @@ class Login extends Component {
                 register: false
             }));
 }
-
+// api called after user clicks login: POST Api call
     onClick = () => {
-        axios.post('http://localhost:5000/users/login', { email: this.state.email, password: this.state.password })
+        axios.post(utils.baseUrl + 'users/login', { email: this.state.email, password: this.state.password })
             .then(res => {
                 if (res.status === 200 && res.statusText === 'OK') {
                     localStorage.setItem('loggedInStatus', JSON.stringify({

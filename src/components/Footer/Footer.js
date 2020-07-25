@@ -1,8 +1,12 @@
+/************
+ * Author: Moni Shah 
+ **********/
+
+
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
-import React, { Component } from 'react';
+import React from 'react';
 import './Footer.css';
-// import logo from '../Navbar/Logo.png';
-import logo from './LogoWhite.png';
+import logo from '../../assets/LogoWhite.png';
 
 const FooterPage = () => {
   return (

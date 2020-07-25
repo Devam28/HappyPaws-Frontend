@@ -1,3 +1,7 @@
+/************
+ * Author: Moni Shah 
+ **********/
+
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -24,6 +28,8 @@ import ForgetPassword from './components/ForgetPassword/ForgetPassword';
 import ForgetPasswordEmail from './components/ForgetPassword/ForgetPasswordEmail';
 
 
+
+// Routes of every component mentioned here.
 function App() {
   return (
     <React.Fragment>

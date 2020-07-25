@@ -1,14 +1,20 @@
+/************
+ * Author: Moni Shah 
+ **********/
+
 import React, { Component } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import logo from './LogoWhite.png';
+import logo from '../../assets/LogoWhite.png';
+import user from '../../assets/user.jpg';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link, NavLink } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import './Navbar.css';
-import { Form, Button } from 'react-bootstrap';
-import Login from '../Login-Register/Login';
+import { Form } from 'react-bootstrap';
+// import Login from '../Login-Register/Login';
 import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
+import * as utils from '../../baseUrl';
 
 class NavbarComponent extends Component {
     constructor(props) {
@@ -25,6 +31,8 @@ class NavbarComponent extends Component {
         }
         this.showLoginModal = this.showLoginModal.bind(this);
     }
+
+    // called for showinf alerts when user logs in or edit Profile successfully
     componentWillMount() {
         this.setState({
             store: JSON.parse(localStorage.getItem('login')) && JSON.parse(localStorage.getItem('login')),
@@ -48,14 +56,20 @@ class NavbarComponent extends Component {
         })
     }
 
+   
     LoginModalClose = () => {
         this.setState({
             addModalShow: false
         })
     }
-
+ // close function invoked when alerts are close
     handleClose = () => {
-        if(JSON.parse(localStorage.getItem('loggedInStatus'))) {
+        if (localStorage.length === 0) {
+            this.setState({
+                open: false,
+            });
+        }
+        if (JSON.parse(localStorage.getItem('loggedInStatus'))) {
             this.setState({
                 open: false,
                 loggedinStatus: false,
@@ -64,7 +78,7 @@ class NavbarComponent extends Component {
                 login: false
             }));
         }
-        if(JSON.parse(localStorage.getItem('EditProfile'))) {
+        if (JSON.parse(localStorage.getItem('EditProfile'))) {
             this.setState({
                 open: false,
                 editProfile: false
@@ -73,73 +87,72 @@ class NavbarComponent extends Component {
                 editProfile: false
             }));
         }
+
     }
 
-onClickLogout = () => {
-    const store = JSON.parse(localStorage.getItem('login'));
-    axios.get("http://localhost:5000/users/logout", { headers: { "Content-Type": "application/json", "x-auth-token": store.token } })
-        // .then(res => {
+    // logout api call performed : GET Api
+    onClickLogout = () => {
 
-        // })
-        // .catch(err) {
-        //     console.log(err)
-        // }
-
-        .then(res => {
-            localStorage.clear();
-            this.setState({
-                store: null,
-                snackbarMssg: "Logged out successfully",
-                open: true
+        const store = JSON.parse(localStorage.getItem('login'));
+        axios.get(utils.baseUrl + "users/logout", { headers: { "Content-Type": "application/json", "x-auth-token": store.token } })
+          .then(res => {
+                localStorage.clear();
+                this.setState({
+                    store: null,
+                    snackbarMssg: "Logged out successfully",
+                    open: true
+                })
             })
-        })
-        .catch(e => {
-            console.log("ERROR ", e);
-            localStorage.clear();
-            this.setState({
-                store: null,
-                snackbarMssg: "Logged out successfully",
-                open: true
+            .catch(e => {
+                console.log("ERROR ", e);
+                localStorage.clear();
+                this.setState({
+                    store: null,
+                    snackbarMssg: "Logged out successfully",
+                    open: true
+                })
             })
-            // this.setState({store: null})
-        })
+    }
 
-}
-
-render() {
-    const { horizontal, vertical } = this.state;
-    // const { isFetching } = this.state;
-    // const LoginModal = this.state.addModalShow
-    // console.log("Render" + LoginModal)
-    return (
-        <div>
-            <Navbar className="navbar_bg" expand="lg" >
-                <Navbar.Brand as={Link} to="/">
-                    <img
-                        alt=""
-                        src={logo}
-                        width="35"
-                        height="35"
-                    />{' '}
+    render() {
+        const { horizontal, vertical } = this.state;
+        // const { isFetching } = this.state;
+        // const LoginModal = this.state.addModalShow
+        // console.log("Render" + LoginModal)
+        return (
+            <div>
+                <Navbar className="navbar_bg" expand="lg" >
+                    <Navbar.Brand as={Link} to="/">
+                        <img
+                            alt=""
+                            src={logo}
+                            width="35"
+                            height="35"
+                        />{' '}
                         Happy Paws</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="mr-auto">
-                        <Nav.Link as={Link} to="/donation">Donation</Nav.Link>
-                        <Nav.Link as={Link} to="/search">Find a Pet</Nav.Link>
-                        <Nav.Link as={Link} to="/petCare">Pet Care</Nav.Link>
-                        <Nav.Link as={Link} to="/share" className="my-active">Share your Story</Nav.Link>
-                        <NavDropdown title="Support Us" id="basic-nav-dropdown">
-                            <NavDropdown.Item as={Link} to="/volunteer" >Volunteer</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item onClick={() => alert("Under Construction")} href="#action/3.4">See our stories</NavDropdown.Item>
-                        </NavDropdown>
-                        <Nav.Link as={Link} to="/contactus">Contact Us</Nav.Link>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            <Nav.Link as={Link} to="/donation">Donation</Nav.Link>
+                            <Nav.Link as={Link} to="/search">Find a Pet</Nav.Link>
+                            <Nav.Link as={Link} to="/petCare">Pet Care</Nav.Link>
+                            <Nav.Link as={Link} to="/share" className="my-active">Share your Story</Nav.Link>
+                            <NavDropdown title="Support Us" id="basic-nav-dropdown">
+                                <NavDropdown.Item as={Link} to="/volunteer" >Volunteer</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item onClick={() => alert("Under Construction")} href="#action/3.4">See our stories</NavDropdown.Item>
+                            </NavDropdown>
+                            <Nav.Link as={Link} to="/contactus">Contact Us</Nav.Link>
 
 
-                    </Nav>
-                    <Form >
-                        <NavDropdown title="Settings" className="marginProfile" id="basic-nav-dropdown">
+                        </Nav>
+                        <Form >
+                            <NavDropdown title={<img
+                                alt="Profile"
+                                src={user}
+                                width="50"
+                                height="50"/>} 
+                                className="marginProfile" >
 
                             <NavDropdown.Item as={Link} to={this.state.store === null ? "/login" : "/editProfile"}>{this.state.store === null ? "Login" : "EditProfile"}</NavDropdown.Item>
 
@@ -166,9 +179,9 @@ render() {
                 message={this.state.snackbarMssg}
                 key={vertical + horizontal}
             />
-        </div>
+        </div >
     );
-}
+    }
 }
 
 export default NavbarComponent;

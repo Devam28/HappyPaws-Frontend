@@ -1,17 +1,20 @@
-// Dummy content is referred from https://www.lipsum.com/
+/************
+ * Author: Moni Shah 
+ **********/
+
 import React, { Component } from 'react';
 import './DonateUs.css';
 import Button from 'react-bootstrap/Button';
 import { Row, Col, Container } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
-import Carousel from 'react-bootstrap/Carousel';
-import PetsIcon from '@material-ui/icons/Pets';
 import NavbarComponent from '../Navbar/Navbar';
 import { Link } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Footer from '../Footer/Footer';
+import donation_captcha from '../../assets/donation_captcha.jpg';
+import donation_gif from '../../assets/donation_gif.gif';
 
 class DonateUs extends Component {
     state = {
@@ -36,10 +39,12 @@ class DonateUs extends Component {
         setReason: ''
     }
 
+    // function on clicking monthly subscription for donation
     monthlyClick = () => {
         this.setState({ subscription: 'Monthly', activeFirstbtn: true, activeSecondbtn: false })
     }
 
+    // on change method for amount 
     onAmountClick = (e, amount) => {
         if (amount > 0) {
             this.setState({
@@ -58,10 +63,12 @@ class DonateUs extends Component {
 
     }
 
+    // onclick method for clicking on one time payment : donation
     onetimeClick = () => {
         this.setState({ subscription: 'One Time', activeFirstbtn: false, activeSecondbtn: true })
     }
 
+    // validation check method for all inputs
     isSubmitDisabled = () => {
         let nameIsRequired = false;
         let validEmail = false;
@@ -193,17 +200,19 @@ class DonateUs extends Component {
             }
         }
     }
+
     // Regex referred from  https://stackoverflow.com/questions/940577/javascript-regular-expression-email-validation
     validateEmail = (email) => {
         return new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email);
 
     }
+    // chnage method for amount
     amountChange = (event) => {
         this.setState({
             amount: event.target.value
         })
     }
-
+// onChange method for inputs
     onValueChange = (e, label) => {
         const nextState = {};
         nextState[label] = e.target.value;;
@@ -228,7 +237,7 @@ class DonateUs extends Component {
                                 <Row>
                                     <Col xs={12} sm={12} md={12} lg={12}>
                                         <img
-                                            src="https://i.pinimg.com/originals/19/58/38/19583866f2c33d855fd2be99b47cddfe.gif"
+                                            src={donation_gif}
                                             alt="First slide"
                                             height="350px"
                                             width="70%"
@@ -337,7 +346,7 @@ class DonateUs extends Component {
                                         <div className="custom-class"><TextField className="input-class" id="standard-basic" label="ZipCode" /></div>
                                         <div >
 
-                                        </div><img className="captcha-css" src="https://www.pandasecurity.com/mediacenter/src/uploads/2014/09/avoid-captcha.jpg" height="75px" width="75px"></img>
+                                        </div><img className="captcha-css" src={donation_captcha} height="75px" width="75px"></img>
                                     </div>
                                     <div>
                                         <TextField className="input-class"

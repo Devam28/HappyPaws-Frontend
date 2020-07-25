@@ -1,15 +1,16 @@
+/************
+ * Author: Moni Shah 
+ **********/
+
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
 import { Row, Col, Container } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
-// import './login.css';
-
-import PetsIcon from '@material-ui/icons/Pets';
 import CloseIcon from '@material-ui/icons/Close';
-import { Link } from 'react-router-dom';
-import logo from '../Navbar/Logo.png';
+import logo from '../../assets/Logo.png';
 import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
+import * as utils from '../../baseUrl';
 
 class ForgetPassword extends Component {
     constructor(props) {
@@ -28,11 +29,12 @@ class ForgetPassword extends Component {
             snackbarMssg: ''
         };
     }
+    // method for alert close
     handleClose = () => {
         this.setState({ open: false });
     };
 
-
+// validation check for all inputs
     isSubmitDisabled = () => {
         let passwordIsValid = false;
         let confirmValid = false;
@@ -97,18 +99,20 @@ class ForgetPassword extends Component {
         }
 
     }
+    // regex for email validation
     emailValidation = (email) => {
         return new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email);
     }
+    // onChange method for all inputs
     onValueChange = (e, label) => {
         const nextState = {};
         nextState[label] = e.target.value;;
         this.setState(nextState);
     }
-
+// api call for forget password: PUT api call
     onClick = () => {
         const store = JSON.parse(localStorage.getItem('login'));
-        axios.put("http://localhost:5000/users/forgetPassword", { email: this.state.email, password: this.state.password })
+        axios.put(utils.baseUrl + "users/forgetPassword", { email: this.state.email, password: this.state.password })
             .then(res => {
                 if (res.status === 200 && res.statusText === 'OK') {
                     this.setState({
@@ -118,6 +122,7 @@ class ForgetPassword extends Component {
                         snackbarMssg: 'Password Updated successfully. Please login!',
                         open: true,
                     })
+                    // clearing the local storage
                     localStorage.clear();
                 }
 

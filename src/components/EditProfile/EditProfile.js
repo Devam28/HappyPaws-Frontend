@@ -1,14 +1,19 @@
+/************
+ * Author: Moni Shah 
+ **********/
+
+
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
 import { Row, Col, Container } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
-import { Link } from 'react-router-dom';
-import logo from '../Navbar/Logo.png';
+import logo from '../../assets/Logo.png';
 import axios from 'axios';
 import { withRouter } from 'react-router';
 import Snackbar from '@material-ui/core/Snackbar';
 import PropTypes from 'prop-types';
+import * as utils from '../../baseUrl';
 
 class EditProfile extends Component {
     constructor(props) {
@@ -26,10 +31,13 @@ class EditProfile extends Component {
             snackbarMssg: ''
         };
     }
+
+// used for with Router navigation
     static propTypes = {
         history: PropTypes.object.isRequired
     }
 
+    //  validation check method for all inputs
     isSubmitDisabled = () => {
         let validEmail = false;
         let nameIsValid = false;
@@ -75,24 +83,25 @@ class EditProfile extends Component {
 
     }
 
-
+// regex for email validations
     emailValidation = (email) => {
         return new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email);
     }
-
+// on change method for all inputs
     onValueChange = (e, label) => {
         const nextState = {};
         nextState[label] = e.target.value;;
         this.setState(nextState);
     }
+    // on click method for alert close
     handleClose = () => {
         this.setState({ open: false });
     };
 
-
+// api calling fior edit profile: PUT API call 
     onClick = () => {
         const store = JSON.parse(localStorage.getItem('login'));
-        axios.put("http://localhost:5000/users/editProfile", { name: this.state.name, email: this.state.email }, { headers: { "Content-Type": "application/json", "x-auth-token": store.token } })
+        axios.put(utils.baseUrl + 'users/editProfile', { name: this.state.name, email: this.state.email }, { headers: { "Content-Type": "application/json", "x-auth-token": store.token } })
             .then(res => {
                 if (res.status === 200 && res.statusText === 'OK') {
                     localStorage.setItem('EditProfile', JSON.stringify({

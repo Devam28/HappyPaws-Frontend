@@ -1,3 +1,8 @@
+/************
+ * Author: Moni Shah 
+ **********/
+
+
 import React, {Component} from 'react';
 
 import 'jodit';
@@ -12,11 +17,12 @@ class Jodit extends Component {
         }
     }
 
+    // onShange method for editor
     updateContent(value) {
-        console.log(value)
         this.setState({content:value})
         this.props.data(value);
     }
+    
     jodit;
 	setRef = jodit => this.jodit = jodit;
 	

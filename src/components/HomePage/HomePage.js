@@ -1,15 +1,28 @@
-// Dummy content is referred from https://www.lipsum.com/
+/************
+ * Author: Moni Shah 
+ **********/
+
 import React, { Component } from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import { Form, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { Row, Col, Container } from 'react-bootstrap';
 import Carousel from 'react-bootstrap/Carousel';
 import './HomePage.css';
-import dog1 from './golden1.jpeg';
+import dog1 from '../../assets/golden1.jpeg';
 import NavbarComponent from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import pet_carousel1 from '../../assets/pet_carousel1.jpg';
+import cat_carousel2 from '../../assets/cat_carousel2.jpg';
+import pet_carousel3 from '../../assets/pet_carousel3.jpg';
+import dog_img from '../../assets/dog_img.jpg';
+import cat_img from '../../assets/cat_img.jpg';
+import cat_img2 from '../../assets/cat_img2.png';
+import user1 from '../../assets/user1.jpg';
+import user2 from '../../assets/user2.jpg';
+import faq from '../../assets/faq.png';
+import contactus from '../../assets/contactus.jpg';
+import volunteer from '../../assets/volunteer.jpg';
+
 // import Login from '../Login-Register/Login'
 
 class HomePage extends Component {
@@ -48,7 +61,7 @@ class HomePage extends Component {
                     <Carousel.Item>
                         <img
                             className="d-block w-100"
-                            src="https://www.sciencemag.org/sites/default/files/styles/article_main_large/public/dogs_1280p_0.jpg?itok=cnRk0HYq"
+                            src={pet_carousel1}
                             alt="First slide"
                             width="100%"
                             height="600px"
@@ -61,7 +74,7 @@ class HomePage extends Component {
                     <Carousel.Item>
                         <img
                             className="d-block w-100"
-                            src="https://www.c-ville.com/wp-content/uploads/2019/09/Cats.jpg"
+                            src={cat_carousel2}
                             alt="Third slide"
                             width="100%"
                             height="600px"
@@ -74,7 +87,7 @@ class HomePage extends Component {
                     <Carousel.Item>
                         <img
                             className="d-block w-100"
-                            src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg"
+                            src={pet_carousel3}
                             alt="Third slide"
                             width="100%"
                             height="600px"
@@ -126,18 +139,18 @@ class HomePage extends Component {
                         </Col>
                         <Col xs={4.5} sm={6} md={6} lg={3}>
                             <div style={{ cursor: "pointer" }} className="img-pets">
-                            <Link to="/profile"> <img height="250px" width="100%" src="https://live.staticflickr.com/730/21225816748_c41918293d_b.jpg"></img></Link>
+                            <Link to="/profile"> <img height="250px" width="100%" src={dog_img}></img></Link>
                                 <p>Cashew, Clayton Park</p>
                             </div>
                         </Col>
                         <Col xs={4.5} sm={6} md={6} lg={3}>
                             <div style={{ cursor: "pointer" }} className="img-pets">
-                            <Link to="/profile"> <img height="250px" width="100%" src="https://upload.wikimedia.org/wikipedia/commons/6/66/An_up-close_picture_of_a_curious_male_domestic_shorthair_tabby_cat.jpg"></img></Link>
+                            <Link to="/profile"> <img height="250px" width="100%" src={cat_img}></img></Link>
                                 <p>Mixy, Spring Garden</p>
                             </div></Col>
                         <Col xs={4.5} sm={6} md={6} lg={3}>
                             <div style={{ cursor: "pointer" }} onClick={() => alert("Under Construction")} className="img-pets">
-                            <Link to="/profile"><img height="250px" width="100%" src="https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg"></img></Link>
+                            <Link to="/profile"><img height="250px" width="100%" src={cat_img2}></img></Link>
                                 <p>Trixy, Lower Sackville</p>
                             </div>
                         </Col>
@@ -148,13 +161,13 @@ class HomePage extends Component {
                     <Row >
                         <Col xs={9} sm={9} md={6} lg={6}>
                             <div style={{ cursor: "pointer" }} onClick={() => alert("Under Construction")} className="img-view">
-                                <img src="https://storage.needpix.com/rsynced_images/couple-532010_1280.jpg" height="250px" width="100%"></img>
+                                <img src={user1} height="250px" width="100%"></img>
                                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took. </p>
                             </div>
                         </Col>
                         <Col xs={9} sm={9} md={6} lg={6}>
                             <div style={{ cursor: "pointer" }} onClick={() => alert("Under Construction")} className="img-view">
-                                <img src="https://p1.pxfuel.com/preview/633/272/975/dogs-dog-pet-pug.jpg" height="250px" width="100%"></img>
+                                <img src={user2} height="250px" width="100%"></img>
                                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took. </p>
                             </div>
                         </Col>
@@ -167,7 +180,7 @@ class HomePage extends Component {
                             <Col xs={9} sm={6} md={4} lg={4}>
                                 <div className="connect-style">
                                     Pet Adoption FAQS
-                                   <img src="https://www.isqua.org/images/2018/02/16/faq-img.png" width="100%" height="100px"></img>
+                                   <img src={faq} width="100%" height="100px"></img>
                            Have a question? Get answers to questions over here..
                            <div><Button variant="outline-primary" onClick={() => alert("Under Construction")} >FAQs</Button>{' '}</div>
                                 </div>
@@ -175,7 +188,7 @@ class HomePage extends Component {
                             <Col xs={9} sm={6} md={4} lg={4}>
                                 <div className="connect-style">
                                     Contact Us
-                                    <img src="https://mortgagephonenumber.com/wp-content/uploads/2018/12/contact_insurance.jpg" width="100%" height="100px"></img>
+                                    <img src={contactus} width="100%" height="100px"></img>
                                 Details for contacting us are mentioned in Contact Us.
                           <div>    <Link to="/contactus"> <Button variant="outline-primary">Contact Us</Button>{' '}</Link></div>
                                 </div>
@@ -183,7 +196,7 @@ class HomePage extends Component {
                             <Col xs={9} sm={6} md={4} lg={4}>
                                 <div className="connect-style">
                                     Volunteer
-                                    <img src="https://coaottawa.ca/wp-content/uploads/2019/09/volunteer-hands-COA.jpg" width="100%" height="100px"></img>
+                                    <img src={volunteer} width="100%" height="100px"></img>
                                Visit our Volunteer page to know our details.
                             <div>    <Link to="/volunteer"> <Button variant="outline-primary"  >Volunteer</Button>{' '}</Link></div>
                                 </div>

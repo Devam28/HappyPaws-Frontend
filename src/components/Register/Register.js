@@ -1,3 +1,8 @@
+/************
+ * Author: Moni Shah 
+ **********/
+
+
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
 import { Row, Col, Container } from 'react-bootstrap';
@@ -5,11 +10,12 @@ import TextField from '@material-ui/core/TextField';
 import './Register.css';
 import CloseIcon from '@material-ui/icons/Close';
 import { Link } from 'react-router-dom';
-import logo from '../Navbar/Logo.png';
+import logo from '../../assets/Logo.png';
 import axios from 'axios';
 import { withRouter } from 'react-router';
 import Snackbar from '@material-ui/core/Snackbar';
 import PropTypes from 'prop-types';
+import * as utils from '../../baseUrl';
 
 class Register extends Component {
     constructor(props) {
@@ -33,6 +39,7 @@ class Register extends Component {
         history: PropTypes.object.isRequired
     }
 
+    // checking validation for all inputs 
     isSubmitDisabled = () => {
         let nameIsRequired = false;
         let validEmail = false;
@@ -101,24 +108,25 @@ class Register extends Component {
         }
     }
 
+    //regex for email validation
     emailValidation = (email) => {
         return new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email);
     }
 
+    // on change method for all inputs
     onValueChange = (e, label) => {
         const nextState = {};
         nextState[label] = e.target.value;;
         this.setState(nextState);
     }
-
+// ,ethod for alert close
     handleClose = () => {
         this.setState({ open: false });
     };
 
-
-
+    // api call for user registartion : POST Api 
     onClick = () => {
-        axios.post('http://localhost:5000/users/register', { name: this.state.name, email: this.state.email, password: this.state.password })
+        axios.post(utils.baseUrl + "users/register", { name: this.state.name, email: this.state.email, password: this.state.password })
             .then(res => {
                 if (res.status === 200 && res.statusText === 'OK') {
                     localStorage.setItem('Register', JSON.stringify({

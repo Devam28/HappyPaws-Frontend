@@ -1,17 +1,18 @@
+/************
+ * Author: Moni Shah 
+ **********/
+
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
 import { Row, Col, Container } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
-// import './login.css';
 import PropTypes from 'prop-types';
-import PetsIcon from '@material-ui/icons/Pets';
 import CloseIcon from '@material-ui/icons/Close';
-import { Link } from 'react-router-dom';
-import logo from '../Navbar/Logo.png';
+import logo from '../../assets/Logo.png';
 import axios from 'axios';
 import { withRouter } from 'react-router';
 import Snackbar from '@material-ui/core/Snackbar';
-
+import * as utils from '../../baseUrl';
 
 class ForgetPasswordEmail extends Component {
     constructor(props) {
@@ -29,7 +30,7 @@ class ForgetPasswordEmail extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired
       }
-
+// validation check for all input
     isSubmitDisabled = () => {
         let validEmail = false;
 
@@ -56,23 +57,24 @@ class ForgetPasswordEmail extends Component {
 
         }
     }
-
+// regex call for email validation
     emailValidation = (email) => {
         return new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email);
     }
+    // function call for alert close
     handleClose = () => {
         this.setState({ open: false });
     };
 
-
+// onchange method for inputs
     onValueChange = (e, label) => {
         const nextState = {};
         nextState[label] = e.target.value;;
         this.setState(nextState);
     }
-
+// api call for receving mail for resetting password: POST Api call
     onClick = () => {
-        axios.post('http://localhost:5000/users/forgetPasswordMail', { email: this.state.email})
+        axios.post(utils.baseUrl + "users/forgetPasswordMail", { email: this.state.email})
             .then(res => {
                 if (res.status === 200 && res.statusText === 'OK') {
                     this.props.history.push("/")
