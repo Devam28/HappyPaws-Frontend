@@ -3,15 +3,19 @@ import {Col, Image, Row, Card, Form, FormControl, Button } from 'react-bootstrap
 import Select from '@material-ui/core/Select';
 import {FormControl as FCMaterial} from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
-import data from './data';
+//import data from './data';
 import './search.css';
+import Profile from '../Profile/Profile.js'
 import NavbarComponent from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
+const axios = require('axios');
+const formData= require('form-data');
+
 
 class Search extends Component {
   constructor(){
     super();
-
+    
     this.state={
       search:null,
       type:null,
@@ -20,8 +24,53 @@ class Search extends Component {
       age:null,
       gender:null,
       proximity:null,
+      data:[{"name":"no-data"}],
+      id:[]
     };
   }
+
+  //Fetch pet data from backend 
+  componentWillMount = () => {
+    console.log("firstttt");
+    axios.get('http://localhost:5000/search/'
+      )
+      .then((response) => {
+          this.setState({data:response.data});
+          console.log("success component "+response.msg+"comple");
+      })
+      .catch((response) => {
+        this.setState({data:[]});
+          console.log("fail"+response);
+      });
+  }
+
+  //fetch the value for the given pet from backend
+  viewPet = (e,id) =>{
+    this.props.history.push({
+              pathname: '/profile',
+              id: id,
+    });
+    // var formData = new FormData();
+    // formData.set('id',id);
+    // console.log("heyyyyyyyyyyyyy"+id);
+    // axios({
+    //   method: 'post',
+    //   url: 'http://localhost:5000/search/viewpet',
+    //   body: {"id": id}
+    //   })
+    //   .then(function (response) {
+    //       //handle success
+    //       this.props.history.push({
+    //         pathname: '/profile',
+    //         id: id,
+    //       });
+    //       console.log("success"+response.data+"comple");
+    //   })
+    //   .catch(function (response) {
+    //       //handle error
+    //       console.log("fail"+response);
+    //   });
+  };
 
   // functions for setting the values of the state variables
   handleSearch=(e)=>{
@@ -158,8 +207,10 @@ class Search extends Component {
     //Data to be rendered
 render() { 
   let filteredData;
-  let items = data.filter((d)=>{
-    console.log("1");
+  let data1= this.state.data;
+  console.log(typeof(data1)+"anddd"+typeof(this.state.data))
+  let items = Object.values(data1).filter((d)=>{
+    console.log("d "+d+ "type of"+ typeof(d));
     filteredData=this.search(d);
     return filteredData;
   }).filter((d)=>{
@@ -187,6 +238,8 @@ render() {
     filteredData=this.searchProximity(d);
     return filteredData;
   }).map(d=>{
+    const id=d._id;
+    console.log("idddddddddddddd"+id);
     return(
      
       <Col sm={4} md={4} className="card-center">
@@ -200,7 +253,8 @@ render() {
                   {d.age} Years | {d.breed} | {d.location} miles away
                   
                   </Card.Text>
-                  <Button  className="button-css" variant="outline-primary"  onClick={() => this.props.history.push('/profile')}>View</Button>
+                
+                  <Button  className="button-css" variant="outline-primary"  onClick={(e,f={id}) => this.viewPet(e,f={id})}>View</Button>
                 </Card.Body>
               </Card>
               </li></ul>

@@ -9,6 +9,9 @@ import Button from 'react-bootstrap/Button'
 import NavbarComponent from '../Navbar/Navbar';
 import { Link } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+import axios from 'axios';
+import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
 
 class Shareyourstory extends Component {
     constructor(props) {
@@ -18,8 +21,12 @@ class Shareyourstory extends Component {
             emailError: null,
             disabled: true,
             counter: 'Your Story',
+            store: JSON.parse(localStorage.getItem('login'))
         }
     }
+    static propTypes = {
+        history: PropTypes.object.isRequired
+      }
 
 
     emailValidation = (email) => {
@@ -53,7 +60,13 @@ class Shareyourstory extends Component {
         }
     }
 
-
+    componentDidMount() {
+        let store = JSON.parse(localStorage.getItem('login'));
+        if(this.state.store && this.state.store.login === true) {
+           this.setState({email: this.state.store.email});
+        }
+    }
+    
     onValueChange = (e, label) => {
         const nextState = {};
         nextState[label] = e.target.value;;
@@ -66,6 +79,20 @@ class Shareyourstory extends Component {
                 counter: value
             });
         }
+    }
+
+    onClickSubmit = () => {
+        axios.post('http://localhost:5000/sharestory/', { email: this.state.email, story: this.state.counter },{ headers: { "Content-Type": "application/json", "x-auth-token": this.state.store.token }})
+            .then(res => {
+                if (res.status === 200 && res.statusText === 'OK') {
+                    this.props.history.push("/")
+                } else {
+
+                }
+            })
+            .catch(function (e) {
+                console.log("ERROR ", e);
+            })
     }
 
 
@@ -91,6 +118,7 @@ class Shareyourstory extends Component {
                                         <TextField className="input-class" id="standard-basic" label="Enter your Email"
                                             floatinglabeltext="Email"
                                             type="email"
+                                            value={this.state.email}
                                             error={this.state.emailError !== null}
                                             helperText={this.state.emailError}
                                             onChange={e => this.onValueChange(e, 'email')}
@@ -104,7 +132,7 @@ class Shareyourstory extends Component {
                             <Jodit data={this.update.bind(this)} />
                         </div>
                         <div className="button-style">
-                            <Link to="/"> <Button disabled={this.state.disabled} type="submit" size="lg" variant="outline-primary">Submit</Button>{' '}</Link>
+                             <Button disabled={this.state.disabled} type="submit" size="lg" onClick={this.onClickSubmit} variant="outline-primary">Submit</Button>{' '}
                         </div>
                     </form>
                 </div>
@@ -113,5 +141,5 @@ class Shareyourstory extends Component {
         );
     }
 }
-
+Shareyourstory = withRouter(Shareyourstory);
 export default Shareyourstory;

@@ -9,24 +9,33 @@
       animation: App-logo-spin infinite 20s linear;
     }
   }
-/* body {
-  background-color: rgb(152, 184, 214); 
-  background-image: linear-gradient(to right, rgb(40, 76, 134) , rgb(172, 199, 221)); 
-} */
+body {
+  background-color: white;
+}
   .main{
-    padding-top: calc(10% - 83px);
-    padding-left: calc(28%);
-    padding-right: calc(28%);
-    padding-bottom: calc(10% - 100px);
+    height: 100vh !important;
+    padding-top: calc(16% - 83px);
+    padding-left: calc(30%);
+    padding-right: calc(30%);
+    padding-bottom:calc(18% -83px);
+    background-color: rgb(152, 184, 214); 
+    background-image: linear-gradient(to right, rgb(40, 76, 134) , rgb(172, 199, 221));
+  }
+  
+  .centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .custom-class {
-    margin: 15px;
+    margin: calc(4%);
   }
   .mainheader{
     font-family: "serif"; 
     font-weight: 300;
-    margin: 12px
+    margin: 12px;
+    color: #1a237e
   }
   
   .custom-h6{
@@ -37,6 +46,9 @@
 
   .button-class{
     margin: 35px;
+  }
+  .row{
+   padding-left: 0px !important;
   }
 
   @media(max-width: 850px) {

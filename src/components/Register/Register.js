@@ -5,17 +5,32 @@ import TextField from '@material-ui/core/TextField';
 import './Register.css';
 import CloseIcon from '@material-ui/icons/Close';
 import { Link } from 'react-router-dom';
+import logo from '../Navbar/Logo.png';
+import axios from 'axios';
+import { withRouter } from 'react-router';
+import Snackbar from '@material-ui/core/Snackbar';
+import PropTypes from 'prop-types';
 
 class Register extends Component {
-    state = {
-        name: '',
-        email: '',
-        password: '',
-        nameError: null,
-        emailError: null,
-        passwordError: null,
-        disabled: true,
+    constructor(props) {
+        super(props)
+        this.state = {
+            name: '',
+            email: '',
+            password: '',
+            nameError: null,
+            emailError: null,
+            passwordError: null,
+            disabled: true,
+            open: false,
+            vertical: 'bottom',
+            horizontal: 'center',
+            snackbarMssg: ''
 
+        }
+    }
+    static propTypes = {
+        history: PropTypes.object.isRequired
     }
 
     isSubmitDisabled = () => {
@@ -96,20 +111,51 @@ class Register extends Component {
         this.setState(nextState);
     }
 
-    onSubmit = () => {
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
+
+
+    onClick = () => {
+        axios.post('http://localhost:5000/users/register', { name: this.state.name, email: this.state.email, password: this.state.password })
+            .then(res => {
+                if (res.status === 200 && res.statusText === 'OK') {
+                    localStorage.setItem('Register', JSON.stringify({
+                        register: true
+                    }));
+                    this.props.history.push("/login")
+                }
+
+            })
+            .catch(e => {
+                this.setState({
+                    snackbarMssg: "User already exists!",
+                    open: true,
+                    name: '',
+                    email: '',
+                    password: '',
+                })
+            })
     }
 
     render() {
+        const { vertical, horizontal } = this.state
         return (
             <div className="main">
                 <div className="App">
-                    <form onSubmit={this.onSubmit} >
+                    <form  >
                         <div>
                             <a href="/"><CloseIcon style={{ float: "right", marginRight: "20px" }} fontSize="large"></CloseIcon></a>
-                            <h2 className="mainheader">HappyPaws</h2>
-                         
-
-                            <Container>
+                            <h2 className="mainheader">
+                                <img
+                                    alt=""
+                                    src={logo}
+                                    width="35"
+                                    height="35"
+                                />{' '}HappyPaws</h2>
+                            <h4>Register</h4>
+                            <Container className="centered">
                                 <Row>
                                     <Col>
                                         <div>
@@ -118,10 +164,11 @@ class Register extends Component {
                                                     id="standard-basic"
                                                     floatinglabeltext="Name"
                                                     type="text"
+                                                    value={this.state.name}
                                                     error={this.state.nameError !== null}
                                                     helperText={this.state.nameError}
                                                     onChange={e => this.onValueChange(e, 'name')}
-                                                    id="standard-basic" 
+                                                    id="standard-basic"
                                                     onBlur={this.isSubmitDisabled}
                                                     variant="outlined"
                                                     required label="Name" /></div>
@@ -129,6 +176,7 @@ class Register extends Component {
                                                 <TextField className="input-class"
                                                     floatinglabeltext="Email"
                                                     type="email"
+                                                    value={this.state.email}
                                                     error={this.state.emailError !== null}
                                                     helperText={this.state.emailError}
                                                     onChange={e => this.onValueChange(e, 'email')}
@@ -140,6 +188,7 @@ class Register extends Component {
                                                 <TextField className="input-class"
                                                     floatinglabeltext="Password"
                                                     type="password"
+                                                    value={this.state.password}
                                                     error={this.state.passwordError !== null}
                                                     helperText={this.state.passwordError}
                                                     onChange={e => this.onValueChange(e, 'password')}
@@ -148,22 +197,31 @@ class Register extends Component {
                                                     onBlur={this.isSubmitDisabled} /></div>
                                         </div>
                                         <div className="button-class">
-                                            <Link to="/"> <Button disabled={this.state.disabled} variant="primary" size="lg" active>
-                                                Sign Up
-                    </Button>{' '}</Link>
+                                            <Button onClick={this.onClick} disabled={this.state.disabled}
+                                                type="button" variant="primary" size="lg" active>
+                                                Register
+                    </Button>{' '}
                                         </div>
                                         <Link to="/login"> Already a HappyPaws member? Login here</Link>
-                          
-                                       
+
+
                                     </Col>
                                 </Row>
                             </Container>
                         </div>
                     </form>
                 </div>
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    message={this.state.snackbarMssg}
+                    autoHideDuration={2000}
+                    key={vertical + horizontal}></Snackbar>
             </div>
         );
     }
 }
 
+Register = withRouter(Register);
 export default Register;

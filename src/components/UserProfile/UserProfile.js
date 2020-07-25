@@ -3,7 +3,7 @@ import NavbarComponent from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import { Container, Row, Col, Nav, Card, Button } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
-import Profile from '../../Profile.jpg'
+// import Profile from '../../Profile.jpg'
 import './UserProfile.css'
 import AboutMe from './AboutMe';
 import AccountSettings from './AccountSettings';
@@ -74,9 +74,9 @@ class UserProfile extends Component {
                             </div> 
                         </div> */}
                         <Col md={4}>
-                            <div className="image-outline">
+                            {/* <div className="image-outline">
                                 <img src={Profile} className="image-border" />
-                            </div>
+                            </div> */}
 
                         </Col>
                         <Col md={8} lg={8} sm={12} xs={12}>

@@ -8,9 +8,44 @@ import dog from './golden.jpeg';
 import dog1 from './golden1.jpeg';
 import dog2 from './golden2.jpeg';
 import Carousel from 'react-bootstrap/Carousel';
+import axios from 'axios';
+import { id } from 'date-fns/locale';
 
 class Register extends Component {
+    constructor(props) {
+        super(props);
+        this.state={
+                pets: [],
+                id1: this.props.location.id
+          
+        }
+        // const id = this.props.location.id
+
+      }
+    
+    componentDidMount() {
+        let id2 = this.state.id1
+        Object.values(id2).map(i =>{
+            axios.get('http://localhost:5000/profile/'+i)
+          .then(res => {
+            this.setState({pets: res.data});
+          })
+            console.log(i)
+        })
+        
+        
+      }
+
+      enquire = (e,id) =>{
+        this.props.history.push({
+                  pathname: '/enquire',
+                  id: id,
+        });
+    };
+
     render() {
+        let pet= this.state.pets;
+        const id = pet._id
         return (
             <div className="home-component">
                 <NavbarComponent />
@@ -19,7 +54,7 @@ class Register extends Component {
                     <Carousel.Item>
                         <img
                             className="img"
-                            src={dog2}
+                            src={pet.image}
                             alt="First slide"
 
                         />
@@ -28,7 +63,7 @@ class Register extends Component {
                     <Carousel.Item>
                         <img
                             className="img"
-                            src={dog1}
+                            src={pet.image}
                             alt="Third slide"
 
                         />
@@ -48,12 +83,12 @@ class Register extends Component {
                    
                     <Row>
                         <Col>
-                        <h2 className="font1">Cookie</h2>
+                        <h2 className="font1">{pet.name}</h2>
                         
                     <ul className="a">
-                        <li className="font1"> &#128062; Adult</li>
-                        <li className="font1"> &#128062; Male</li>
-                        <li className="font1"> &#128062; Golden</li></ul>
+                        <li className="font1"> &#128062; {pet.type}</li>
+                        <li className="font1"> &#128062; {pet.gender}</li>
+                        <li className="font1"> &#128062; {pet.color}</li></ul>
                         </Col>
                     </Row>
                     <Row >
@@ -62,10 +97,7 @@ class Register extends Component {
                             
                             <h4 className="font2">About</h4>
                             <div className="about-text">
-                                Meet Cookie! A 3 year old male Golden Retriever. Cookie is 85 lbs of pure love! This boy is very affectionate and snuggly indoors (he is practically your shadow), while being extremely athletic outdoors!
-    He is exuberant and barks while wagging his tail when meeting new people, and once settled loves everyone he meets.
-    He has been good with big dogs, but was too worked up around a small dog, and not recommended with cats.
-    He has separation anxiety, although this has been improving, and would do well in a home with another dog or with children 12+. Cookie is house trained, crate trained, and knows his basic commands.
+                            {pet.description}
 </div>
                         </Col>
                   
@@ -75,10 +107,10 @@ class Register extends Component {
 
                                 <Card style={{ width: '25rem' }} className="card">
                                     <Card.Body>
-                                        <Card.Title>Help Cookie find a home</Card.Title>
+                                        <Card.Title>Help {pet.name} find a home</Card.Title>
                                         <Button variant="outline-info" className="button" onClick={() => this.props.history.push('/adopt')}>Adopt</Button>{' '}
                                         <br />
-                                        <Button variant="outline-secondary" className="button" onClick={() => this.props.history.push('/enquire')}>Enquire</Button>{' '}
+                                        <Button variant="outline-secondary" className="button" onClick={(e,f={id}) => this.enquire(e,f={id})}>Enquire</Button>{' '}
                                         <br />
 
                                     </Card.Body>
