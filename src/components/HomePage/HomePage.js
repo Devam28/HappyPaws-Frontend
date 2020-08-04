@@ -15,7 +15,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import pet_carousel1 from '../../assets/pet_carousel1.jpg';
 import cat_carousel2 from '../../assets/cat_carousel2.jpg';
 import pet_carousel3 from '../../assets/pet_carousel3.jpg';
-import dog_img from '../../assets/dog_img.jpg';
+import dog_img from '../../assets/corgy.jpg';
 import cat_img from '../../assets/cat_img.jpg';
 import cat_img2 from '../../assets/cat_img2.png';
 import user1 from '../../assets/user1.jpg';
@@ -97,8 +97,8 @@ class HomePage extends Component {
                             height="600px"
                         />
                         <Carousel.Caption>
-                            <h3>First slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            <h3>Adopt a Pet</h3>
+                            <p>Choose to adopt a pet of your choice from HappyPaws</p>
                         </Carousel.Caption>
                     </Carousel.Item>
                     <Carousel.Item>
@@ -110,8 +110,8 @@ class HomePage extends Component {
                             height="600px"
                         />
                         <Carousel.Caption>
-                            <h3>Second slide label</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <h3>Sponsor a Pet</h3>
+                            <p>Not ready to adopt but wanna take care of a pet? Sponsor any pet on HappyPaws!</p>
                         </Carousel.Caption>
                     </Carousel.Item>
                     <Carousel.Item>
@@ -123,8 +123,8 @@ class HomePage extends Component {
                             height="600px"
                         />
                         <Carousel.Caption>
-                            <h3>Third slide label</h3>
-                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                            <h3>Share your story</h3>
+                            <p>Found joy from adopting pets from HappyPaws? Share your stories on our page for everyone else to see!</p>
                         </Carousel.Caption>
                     </Carousel.Item>
                 </Carousel>
@@ -135,7 +135,7 @@ class HomePage extends Component {
                 <Container>
                     <Row>
                         <Col xs={12} sm={12} md={6} lg={6}>
-                            Saving a life is always the best gift you could offer. And when it comes to pets, there is not enough shelter for the number of animals that are born every year. This can be assisted by providing them a safe place for life. Adopting them and giving them a little space in our homes and lives would create a great impact in their lives. HappyPaws is intended in helping find a lovely and safe home for animals who don’t have a proper shelter.
+                            Saving a life is always the best gift you could offer. And when it comes to pets, there is not enough shelter for the number of animals that are born every year. This can be assisted by providing them a safe place for life. Adopting them and giving them a little space in our homes and lives would create a great impact in their lives. HappyPaws is intended in helping to find a lovely and safe home for animals who don’t have a proper shelter.
                         </Col>
                         <Col xs={12} sm={12} md={6} lg={6}>
                             <div className="font-class">
@@ -163,25 +163,25 @@ class HomePage extends Component {
                     <Row>
                         <Col xs={4.5} sm={6} md={6} lg={3}>
                             <div style={{ cursor: "pointer" }} className="img-pets">
-                                <Link to="/profile"><img height="250px" width="100%" src={dog1}></img></Link>
-                                <p>Polo, Darmouth</p>
+                                <Link to="/profile/5f1923e94673315bd41f8ca7"><img height="250px" width="100%" src={dog1}></img></Link>
+                                <p>Cookie, Dartmouth</p>
                             </div>
                         </Col>
                         <Col xs={4.5} sm={6} md={6} lg={3}>
                             <div style={{ cursor: "pointer" }} className="img-pets">
-                            <Link to="/profile"> <img height="250px" width="100%" src={dog_img}></img></Link>
-                                <p>Cashew, Clayton Park</p>
+                            <Link to="/profile/5f1bce17369dd084a037a977"> <img height="250px" width="100%" src={dog_img}></img></Link>
+                                <p>Maple, Clayton Park</p>
                             </div>
                         </Col>
                         <Col xs={4.5} sm={6} md={6} lg={3}>
                             <div style={{ cursor: "pointer" }} className="img-pets">
-                            <Link to="/profile"> <img height="250px" width="100%" src={cat_img}></img></Link>
-                                <p>Mixy, Spring Garden</p>
+                            <Link to="/profile/5f1939a382e53e7104fc0112"> <img height="250px" width="100%" src={cat_img}></img></Link>
+                                <p>Jackey, Spring Garden</p>
                             </div></Col>
                         <Col xs={4.5} sm={6} md={6} lg={3}>
-                            <div style={{ cursor: "pointer" }} onClick={() => alert("Under Construction")} className="img-pets">
-                            <Link to="/profile"><img height="250px" width="100%" src={cat_img2}></img></Link>
-                                <p>Trixy, Lower Sackville</p>
+                            <div style={{ cursor: "pointer" }} className="img-pets">
+                            <Link to="/profile/5f19392182e53e7104fc0110"><img height="250px" width="100%" src={cat_img2}></img></Link>
+                                <p>Whisker, Lower Sackville</p>
                             </div>
                         </Col>
                     </Row>
@@ -192,19 +192,19 @@ class HomePage extends Component {
                         <Col xs={9} sm={9} md={6} lg={6}>
                             <div style={{ cursor: "pointer" }} onClick={() => alert("Under Construction")} className="img-view">
                                 <img src={user1} height="250px" width="100%"></img>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took. </p>
+                                <p>We adopted our pet, Coco from HappyPaws last month. She is now a member in our family. My wife loves to play catch with her and she is a good companion to me when I just need someone to cuddle with. Thank you HappyPaws for introducing us to her!</p>
                             </div>
                         </Col>
                         <Col xs={9} sm={9} md={6} lg={6}>
                             <div style={{ cursor: "pointer" }} onClick={() => alert("Under Construction")} className="img-view">
                                 <img src={user2} height="250px" width="100%"></img>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took. </p>
+                                <p>Foxy and Cottontail are the two pups that I adopted from HappyPaws. My daughter, Lily, loves playing catch with them. They have brought a lot of joy in our lives and especially hers. We love watching her smile because of them. Thank you Happy Paws for bringing this happiness into our lives. </p>
                             </div>
                         </Col>
                     </Row>
                 </Container>
                 <div className="footer-style">
-                    <h4 className="font-style-class">Get your new friend today</h4>
+                    <h4 className="font-style-class"> Reach out to us to talk or help our pets</h4>
                     <Container>
                         <Row>
                             <Col xs={9} sm={6} md={4} lg={4}>
@@ -212,7 +212,7 @@ class HomePage extends Component {
                                     Pet Adoption FAQS
                                    <img src={faq} width="100%" height="100px"></img>
                            Have a question? Get answers to questions over here..
-                           <div><Button variant="outline-primary" onClick={() => alert("Under Construction")} >FAQs</Button>{' '}</div>
+                           <div><Link to="/volunteer"> <Button variant="outline-primary" >FAQs</Button>{' '}</Link></div>
                                 </div>
                             </Col>
                             <Col xs={9} sm={6} md={4} lg={4}>

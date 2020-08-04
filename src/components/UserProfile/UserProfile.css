@@ -52,6 +52,19 @@ body {
     margin-top: 2rem;
 }
 
+@media (max-width: 768px) {
+    .desc-outline .content-left {
+        justify-content: center;
+    }
+  }
+  /* @media (max-width: 410px) {
+    .full-width-padding .tab-part {
+        padding: 0rem;
+        margin-top: 1rem;
+    }
+  } */
+  
+
 
 .desc-outline {
     margin-top: 2rem;
@@ -84,8 +97,10 @@ body {
 }
 
 .tab-part .row {
+    margin-left: 1rem;
     padding-left: 1rem;
 }
+
 
 .margin-bottom {
     margin-bottom: 0.5rem;

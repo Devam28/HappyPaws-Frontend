@@ -1,157 +1,145 @@
 /**
- * @author: Bhagyashree
- */ 
+ * @author: Bhagyashree, Ramya 
+ */
 import React, { Component } from 'react';
 import contactus from '../../assets/contactus1.jpg';
 import facebook from '../../assets/facebook.jpg';
 import insat from '../../assets/insta.png';
 import twitter from '../../assets/twitter.png';
-import {Form, Button, Jumbotron,Container,Row, Col, Image} from 'react-bootstrap';
+import { Form, Button, Jumbotron, Container, Row, Col, Image } from 'react-bootstrap';
 import NavbarComponent from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
+import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
+import * as utils from '../../baseUrl';
 
 class ContactUs extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
-        body : null,
-        subject : null,
-        name: null,
-        email: null,
-        nameError : null,
-        subjectError : null,
-        bodyError: null,
-        emailError: null,
-        flag: false };
+        this.state = {
+            body: null,
+            query_subject: null,
+            name: null,
+            concern: null,
+            email: null,
+            nameError: null,
+            subjectError: null,
+            bodyError: null,
+            emailError: null,
+            flag: false
+        };
     };
 
-    validateUser = () => {
-        // Code for comparing the input with the user credentials stored in the database
-        // An API request will be made to the backend, which will fetch data from database and send it to the frontend
-        if (this.state.name!==null && this.state.email!== null && this.state.body!== null && this.state.subject!== null){
-            console.log("Form submitted ");
-            alert("Form submitted successfully. We will get back to you shortly!");
-            
-        }
-        else{
-            if(this.state.nameError!=null)
-                alert("Please enter your name.");
-            else if(this.state.emailError!=null)
-                alert("Please enter valid email id.");
-            else if(this.state.subjectError!=null)
-                alert("Please write appropriate Subject."); 
-            else if(this.state.bodyError!=null)
-                alert("Please write appropriate message so that we can assist you further.");  
-        }
-    };
 
-    onNameChange= (e) => {
-        const val= e.target.value;
-        if (val !== null && val!=="" && val!==" " && val.length>1){
-            this.state.nameError = null;
-            this.setState({
-            name: e.target.value,
-            });
-        }
-        else{
-            this.setState({
-                nameError: "Please enter valid name",
-            });
-        }
-      }
+    //validation of all inputs
+    isSubmitDisabled = () => {
+        let nameIsRequired = false;
+        let validEmail = false;
 
-      onBodyChange= (e) => {
-        const val= e.target.value;
-        if (val!==null && val!=="" && val!==" " && val.length>10){
-            this.state.bodyError = null;
+        if (this.state.fname === '' || !this.state.fname) {
+            nameIsRequired = false;
             this.setState({
-            body: e.target.value,
+                nameError: null
             });
-        }
-        else{
-            this.setState({
-                bodyError: "Body part must be more than 10 characters",
-            });
-        }
-      }
-
-      onEmailChange= (e) => {
-        const regexpr = RegExp(/^[a-zA-Z0-9.!#$%&’*+/=?^_`~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ );
-        const val= e.target.value;
-        if (val!==null && val!=="" && val!==" " && val.length>8){
-            this.state.emailError = null;
-            if(regexpr.test(val)==true){
+        } else {
+            if (this.state.fname !== '') {
+                nameIsRequired = true
                 this.setState({
-                email: e.target.value,
+                    nameError: null
+                });
+            }
+
+        }
+
+
+        if (this.state.email === "") {
+            this.setState({
+                emailError: null
+            });
+        } else {
+            if (this.emailValidation(this.state.email)) {
+                validEmail = true
+                this.setState({
+                    emailError: null
+                });
+            } else {
+                this.setState({
+                    emailError: "Please enter valid email"
                 });
             }
         }
-        else{
-            this.setState({
-                emailError: "Please enter valid email address",
-            });
-        }
-      }
+      
+    }
+
+    //email validation
+    emailValidation = (email) => {
+        return new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email);
+
+    }
 
 
-      onSubjectChange= (e) => {
-        const val= e.target.value;
-        
-        if (val!==null && val!=="" && val!==" " && val.length>8){
-            this.state.subjectError = null;            
-            this.setState({
-            subject: e.target.value,
-            });
-            
-        }
-        else{
-            this.setState({
-                subjectError: "Subject length must be more than 8 characters",
-            });
-        }
-      }
+    //on change method for accessing the values
+    onValueChange = (e, label) => {
+        const nextState = {};
+        nextState[label] = e.target.value;;
+        this.setState(nextState);
+    }
 
-    render() { 
-        
-        return ( 
+    //post api call after filling contact us form
+    onClick = () => {
+        axios.post(utils.baseUrl + 'contactus', { name: this.state.name, email: this.state.email, query_subject: this.state.query_subject, concern: this.state.concern })
+            .then(function (res) {
+                if (res.status === 200 && res.statusText === 'OK') {
+
+                }
+
+            })
+            .catch(function (e) {
+                console.log("ERROR ", e);
+            })
+    }
+
+    render() {
+
+        return (
             <React.Fragment>
-            <NavbarComponent/>
-            <div className="search_css">
-            
-            <Row >
-                <Jumbotron fluid className="class-jumbotron">
-                    <Container>
-                        <Row>
-                            <Col xs={6} md={4}> 
-                                <Image src={contactus} height="280px" width="280px" roundedCircle />
-                            </Col>
-                            <Col xs={12} md={8}>
-                                <h3 style={{paddingTop:'6vh'}}>Contact Information</h3>
-                                <p >Phone: 902-999-9999</p>
-                                <p>Email: support@happypaws.com</p>
-                                <p>Address: 1113 WaterBridge Terminal, 
-                                    B3A A3B, Halifax, NS, Canada
-                                </p>
-                                <Button variant="outline-info" style={{marginLeft:'25px',marginRight:'25px'}}><img src={facebook} height="30px" width="30px" /></Button>
-                                <Button variant="outline-info" style={{marginLeft:'25px',marginRight:'25px'}}><img src={twitter} height="30px" width="30px"/></Button>
-                                <Button variant="outline-info" style={{marginLeft:'25px',marginRight:'25px'}}><img src={insat} height="30px" width="30px"/></Button>
-                    
-                            </Col>
-                        </Row>
-                    </Container>
-                </Jumbotron>
-            </Row>
-            <div className="contact-background">
-            <div className="contact">
-           
+                <NavbarComponent />
+                <div className="search_css">
 
-                        <div><h3 className="heading"> Have Something on your mind?!! Let us know and we will help you out. </h3></div>
-                        <div><h6 style={{
-                            alignItems: 'center',
-                        }}> Fill the below form and explain your concern!! </h6></div>
-                        
-            <Row>
-                <form >
+                    <Row >
+                        <Jumbotron fluid className="class-jumbotron">
+                            <Container>
+                                <Row>
+                                    <Col xs={6} md={4}>
+                                        <Image src={contactus} height="280px" width="280px" roundedCircle />
+                                    </Col>
+                                    <Col xs={12} md={8}>
+                                        <h3 style={{ paddingTop: '6vh' }}>Contact Information</h3>
+                                        <p >Phone: 902-999-9999</p>
+                                        <p>Email: support@happypaws.com</p>
+                                        <p>Address: 1113 WaterBridge Terminal,
+                                        B3A A3B, Halifax, NS, Canada
+                                </p>
+                                        <Button variant="outline-info" style={{ marginLeft: '25px', marginRight: '25px' }}><img src={facebook} height="30px" width="30px" /></Button>
+                                        <Button variant="outline-info" style={{ marginLeft: '25px', marginRight: '25px' }}><img src={twitter} height="30px" width="30px" /></Button>
+                                        <Button variant="outline-info" style={{ marginLeft: '25px', marginRight: '25px' }}><img src={insat} height="30px" width="30px" /></Button>
+
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Jumbotron>
+                    </Row>
+                    <div className="contact-background">
+                        <div className="contact">
+
+
+                            <div><h3 className="heading"> Have Something on your mind?!! Let us know and we will help you out. </h3></div>
+                            <div><h6 style={{
+                                alignItems: 'center',
+                            }}> Fill the below form and explain your concern!! </h6></div>
+
+                            <Row>
+                                {/* <form >
                     <label >Name:</label>
                     <Form.Control input type="text" className="form-control"
                     onChange = {this.onNameChange}/>
@@ -172,14 +160,72 @@ class ContactUs extends Component {
                     onChange = {this.onBodyChange}/> 
                     <div className="warning"> {this.state.bodyError} </div>
                     <Button variant="primary" style={{margin:10}} onClick={() => {this.validateUser()}}> Submit Query </Button>
-                </form>
-            </Row>
+                </form> */}
+                                <form className="form" onSubmit={this.onSubmit} action="/" >
+                                    <div>
+                                        <Container>
+                                            <Row className="row" >
+
+                                                <TextField
+                                                    required
+                                                    error={this.state.nameError !== null}
+                                                    helperText={this.state.nameError}
+                                                    onChange={e => this.onValueChange(e, 'name')}
+                                                    label="First Name"
+                                                    onBlur={this.isSubmitDisabled}
+                                                    variant="outlined"
+                                                />
+                                            </Row>
+
+                                            <Row className="row">
+                                                <TextField
+                                                    required
+                                                    error={this.state.emailError !== null}
+                                                    helperText={this.state.emailError}
+                                                    onChange={e => this.onValueChange(e, 'email')}
+                                                    label="Email"
+                                                    type="email"
+                                                    onBlur={this.isSubmitDisabled}
+                                                    variant="outlined"
+                                                />
+
+                                            </Row>
+                                            <Row>
+
+                                                <TextField
+                                                    label="Subject"
+                                                    type="text"
+                                                    onChange={e => this.onValueChange(e, 'query_subject')}
+                                                    onBlur={this.isSubmitDisabled}
+                                                    variant="outlined"
+                                                />
+                                            </Row>
+                                            <Row>
+                                                <TextField
+                                                    className="textarea"
+                                                    label="Enter your concern"
+                                                    onChange={e => this.onValueChange(e, 'concern')}
+                                                    multiline
+                                                    rows={5}
+                                                    variant="outlined"
+                                                />
+                                            </Row>
+                                            <Row>
+                                                <Button onClick={this.onClick} type="submit" size="lg" variant="outline-primary">Submit query</Button>{' '}
+
+                                            </Row>
+                                        </Container>
+
+                                    </div>
+                                </form>
+                            </Row>
+                        </div>
+                    </div>
                 </div>
-                </div>
-                </div>
-                <Footer/>
-                </React.Fragment>
-         )};
+                <Footer />
+            </React.Fragment>
+        )
+    };
 }
- 
+
 export default ContactUs;

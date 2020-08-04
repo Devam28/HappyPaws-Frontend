@@ -37,13 +37,10 @@ const FooterPage = () => {
           </MDBCol>
           <MDBCol>
           <li className="list">
-                <a href="/">Support Us</a>
+                <a href="/volunteer">Support Us</a>
                 <ol>
                   <li className="list">
-                    <a href="/">Volunteer</a>
-                  </li>
-                  <li className="list">
-                    <a href="/">See our stories</a>
+                    <a href="/volunteer">Volunteer</a>
                   </li>
                 </ol>
               </li>
@@ -57,7 +54,7 @@ const FooterPage = () => {
                     <a href="/">About Us</a>
                   </li>
                   <li className="list">
-                    <a href="/">Volunteer</a>
+                    <a href="/volunteer">Volunteer</a>
                   </li>
                 </ol>
               </li>

@@ -4,14 +4,10 @@
  
 .FormAdopt{
   background:white;
-  font-family: serif;
+  
 }
 
-.FormVolunteer{
-  display:flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
+
 .row{
   padding-left: 100px;
   padding-bottom: 20px;
@@ -19,10 +15,7 @@
 }
 
 
-.MainVolunteer{
-  background:white;
-  font-family: serif; 
-}
+
 
 .textarea{
   height: 200px;

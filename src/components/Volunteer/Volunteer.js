@@ -154,7 +154,7 @@ export default function Volunteer() {
       console.log("Error"+e);
 
       })
-      alert("Volunteered! An email will be sent to you with the ticket")
+      //alert("Volunteered! An email will be sent to you with the ticket")
   }
 
   //volunteer webpage displayed
@@ -186,7 +186,7 @@ export default function Volunteer() {
       <TabPanel value={value} index={0} >
               <h5>
                     <br/>
-                    Don't have the time to Volunteer ? <br/>
+                    Do not have the time to Volunteer ? <br/>
                     You can join us at various shelters to Volunteer with our dogs and cats.<br/>
                     A little care and a lot of fun!
                 </h5>

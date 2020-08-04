@@ -2,20 +2,20 @@
  * Author: Vigneshwari Ravichandran
  **********/
 
-.FormVolunteer{
+/* .FormVolunteer{
   display:flex;
   flex-direction: row;
   justify-content: space-around;
   font-family: serif;
-} 
-.root{
+}  */
+/* .root{
   font-family: serif;
-} 
+}  */
 
-.MainVolunteer{
+/* .MainVolunteer{
   background:white;
   font-family: serif; 
-}
+} */
 
 [alt="Volunteer"]{
   height: 530px;

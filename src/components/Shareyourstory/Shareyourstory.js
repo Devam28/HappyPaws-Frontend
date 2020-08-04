@@ -8,7 +8,7 @@ import '../../App.css';
 import './Shareyourstory.css';
 import TextField from '@material-ui/core/TextField';
 import Jodit from './Jodit';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
 import NavbarComponent from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import axios from 'axios';

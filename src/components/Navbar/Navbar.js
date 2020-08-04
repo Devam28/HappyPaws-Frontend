@@ -156,8 +156,6 @@ class NavbarComponent extends Component {
                             <Nav.Link as={Link} to={this.state.store && this.state.store.login === true ? '/share' : 'login'} className="my-active">Share your Story</Nav.Link>
                             <NavDropdown title="Support Us" id="basic-nav-dropdown">
                                 <NavDropdown.Item as={Link} to="/volunteer" >Volunteer</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item onClick={() => alert("Under Construction")} href="#action/3.4">See our stories</NavDropdown.Item>
                             </NavDropdown>
                             <Nav.Link as={Link} to="/contactus">Contact Us</Nav.Link>
 
@@ -171,7 +169,7 @@ class NavbarComponent extends Component {
                                 height="50"/>} 
                                 className="marginProfile" >
 
-                            <NavDropdown.Item as={Link} to={this.state.store === null ? "/login" : "/editProfile"}>{this.state.store === null ? "Login" : "EditProfile"}</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to={this.state.store === null ? "/login" : "/userprofile"}>{this.state.store === null ? "Login" : "EditProfile"}</NavDropdown.Item>
 
                             {/* <NavDropdown.Item as={Link} to="/editProfile" >Edit Profile</NavDropdown.Item> */}
                             <NavDropdown.Divider />

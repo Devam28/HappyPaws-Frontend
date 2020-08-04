@@ -7,6 +7,8 @@ import { Form, Button, ButtonGroup } from 'react-bootstrap';
 import { Row, Col, Container, Card } from 'react-bootstrap';
 import './profile.css';
 import NavbarComponent from '../Navbar/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import { Link} from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import Carousel from 'react-bootstrap/Carousel';
 import axios from 'axios';
@@ -36,6 +38,15 @@ class Register extends Component {
                 })
     }
 
+    componentWillMount() {
+        this.setState({
+            store: JSON.parse(localStorage.getItem('login')) && JSON.parse(localStorage.getItem('login')),
+            loggedinStatus: JSON.parse(localStorage.getItem('loggedInStatus')) && JSON.parse(localStorage.getItem('loggedInStatus')),
+            snackbarMssg: "Logged in successfully",
+            open: this.state.loggedinStatus && (this.state.loggedinStatus.login === true ? true : false),
+        })
+    }
+
     //onclick function to redirect to enquire page 
     enquire = (e, id) => {
         this.props.history.push({
@@ -43,7 +54,18 @@ class Register extends Component {
 
         });
     };
+    adopt = (e, id) => {
+        this.props.history.push({
+            pathname: '/adopt/'+this.state.id
 
+        });
+    };
+    login = (e, id) => {
+        this.props.history.push({
+            pathname: '/login'
+
+        });
+    };
     //onclick function to redirect to sponsor page
     sponsor = (e, id) => {
         this.props.history.push({
@@ -119,8 +141,9 @@ class Register extends Component {
                                     <Card style={{ width: '25rem' }} className="card">
                                         <Card.Body>
                                             <Card.Title>Help {pet.name} find a home</Card.Title>
-                                            <Button variant="outline-info" className="button" onClick={() => this.props.history.push('/adopt')}>Adopt</Button>{' '}
-                                            <br />
+                                            {/* <Button variant="outline-info" className="button" onClick={() => this.props.history.push('/adopt')}><Nav.Link as={Link} to={this.state.store && this.state.store.login === true ? (e, f = { id }) =>this.adopt(e, f = { id }): 'login'} className="my-active">Adopt</Nav.Link>Adopt</Button>{' '} */}
+                                            <Button variant="outline-info" className="button" onClick={this.state.store && this.state.store.login === true ? (e, f = { id }) =>this.adopt(e, f = { id }): (e, f = { id }) =>this.login(e, f = { id })}>Adopt</Button>{' '}
+                                            {/* <Nav.Link as={Link} to={this.state.store && this.state.store.login === true ? (e, f = { id }) =>this.adopt(e, f = { id }): 'login'} className="my-active"><Button variant="outline-info" className="button" onClick={() => this.props.history.push('/adopt')}>Adopt</Button>{' '}</Nav.Link> */}
                                             <Button variant="outline-secondary" className="button" onClick={(e, f = { id }) => this.enquire(e, f = { id })}>Enquire</Button>{' '}
                                             <br />
 

@@ -70,7 +70,7 @@ class Sponsor extends Component {
         }
         // POST request using axios
         axios.post(utils.baseUrl + 'sponsor', data)
-        //Handling Promise
+            //Handling Promise
             .then(function (res) {
                 if (res.status === 200 && res.statusText === 'OK') {
                 } else {
@@ -90,7 +90,6 @@ class Sponsor extends Component {
                     message: "Payment Failed! "
                 })
             })
-
 
 
     }
